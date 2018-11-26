@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE persons [
+    <!ELEMENT lastname (#PCDATA)>
+    <!ELEMENT firstname (#PCDATA)>
+    <!ELEMENT residence (#PCDATA)>
+    <!ELEMENT children (person*)>
+    <!ELEMENT person (firstname, (lastname?), (children?), (residence?))>
+    <!ELEMENT persons (person+)>
+    <!ATTLIST person id ID #REQUIRED>
+    <!ATTLIST person friends IDREFS #IMPLIED>
+	<!ATTLIST persons file CDATA #IMPLIED>
+    ]>
+<?mach was draus?>
+<persons file="this">
+    <!-- Hier beginnen die Daten -->
+    <person id="p-2">
+        <firstname>Pu</firstname>
+        <lastname>Bär</lastname>
+    </person>
+    <person id="p-1">
+        <firstname>Christopher</firstname>
+        <lastname>Robin</lastname>
+    </person>
+    <person id="p-3">
+        <firstname>Eule</firstname>
+        <residence>Hundertsechzig-Morgen-Wald</residence>
+    </person>
+    <person id="p-4">
+        <firstname>I-Ah</firstname>
+    </person>
+    <person id="p-5">
+        <firstname>Kängah</firstname>
+        <children>
+            <person id="p-6" friends=" p-1 p-7 ">
+                <firstname>Klein Ruh</firstname>
+                <!-- Kommentar bei Klein Ruh -->
+                <residence>Bei Kängah</residence>
+				<children>
+					<person id="p-1337">
+						<firstname>Tyrone</firstname>
+						<lastname>Rocks</lastname>
+					</person>
+				</children>
+            </person>
+        </children>
+        <residence>Bei Kängah</residence>
+        <!-- zusätzlich -->
+    </person>
+    <person id="p-7">
+        <firstname>Tigger</firstname>
+        <residence>Bei Kängah</residence>
+    </person>
+    <person id="p-8" friends="p-1">
+        <firstname>Ferkel<!-- Kommentar bei Ferkel--></firstname>
+    </person>
+    <!-- Kommentar zum Schluss -->
+    <?tu was damit?>
+</persons>
