@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <!-- Selbstdefinierte Typen -->
+    <xs:simpleType name="title">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+
+    <xs:simpleType name="description">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+
+    <xs:simpleType name="link">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+
+    <xs:simpleType name="sourcename">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+
+    <xs:simpleType name="sourcelink">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+    
+    <xs:simpleType name="category">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+
+    <xs:simpleType name="tag">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+    
+    <xs:complexType name="tags">
+        <xs:sequence>
+        <xs:element name="tag" type="tag" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="entry">
+        <xs:sequence>
+        <xs:element name="title" type="title"/>
+        <xs:element name="description" type="description"/>
+        <xs:element name="link" type="link"/>
+        <xs:element name="sourcename" type="sourcename"/>
+        <xs:element name="sourcelink" type="sourcelink"/>
+        <xs:element name="category" type="category"/>
+        <xs:element name="tags" type="tags"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <!-- Eigentliche Definition des XML Schemas -->
+    <xs:element name="rss">
+        <xs:complexType>
+        <xs:sequence>
+            <xs:element name="entry" type="entry" maxOccurs="unbounded"/>
+        </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

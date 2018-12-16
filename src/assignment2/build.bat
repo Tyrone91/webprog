@@ -1,0 +1,1 @@
+xjc -p assignment2 -d .. -xmlschema schema.xsd
