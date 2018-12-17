@@ -12,6 +12,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * SAX Version of a {@link XMLReaderWrapper}
+ */
 public class SAXConnector extends DefaultHandler implements XMLReaderWrapper {
     
     private CallbackHolder callbackHolder;
@@ -37,9 +40,6 @@ public class SAXConnector extends DefaultHandler implements XMLReaderWrapper {
     
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        //System.out.println("localName: " + localName);
-        //System.out.println("qName: " + qName);
-        
         this.callbackHolder.fireElementStart(qName);
     }
     
@@ -67,9 +67,6 @@ public class SAXConnector extends DefaultHandler implements XMLReaderWrapper {
             reader.parse( new InputSource(inputstream));
             
         } catch(Exception ex) {
-            System.out.println("exception2");
-            System.err.println(ex);
-            System.out.println("eh...");
             ex.printStackTrace(System.err);
         }
         

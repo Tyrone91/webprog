@@ -2,6 +2,9 @@ package assignment2;
 
 import java.util.function.Consumer;
 
+/**
+ * Utility object to hold the various callback functions
+ */
 public class CallbackHolder {
     
     private Consumer<String> onElementStartCallback = str -> {};

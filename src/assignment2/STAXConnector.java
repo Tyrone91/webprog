@@ -9,6 +9,9 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 
+/**
+ * STAX version of a {@link XMLReaderWrapper}
+ */
 public class STAXConnector implements XMLReaderWrapper {
     
     private CallbackHolder callbacks;
@@ -77,10 +80,10 @@ public class STAXConnector implements XMLReaderWrapper {
             XMLStreamReader reader = factory.createXMLStreamReader(inputstream);
             
             while(reader.hasNext()) {
+                /* look for the event in the event map and throw the corresponding event */
                 call(reader.next(), reader);
             }
         } catch(Exception ex) {
-            System.out.println("exception3");
             ex.printStackTrace(System.err);
         }
     }

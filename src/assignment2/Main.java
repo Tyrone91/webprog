@@ -55,6 +55,12 @@ public class Main {
     private static final String OFFLINE = "offline";
     private static final String DEFAULTS = "defaults";
     
+    /**
+     * This functions parse the passed command line values and returns a new object with the wanted options.
+     * if an error happens null will be returned.
+     * @param args
+     * @return
+     */
     public static CommandLineValues parse(String[] args) {
         final CommandLineValues res = new CommandLineValues();
         
