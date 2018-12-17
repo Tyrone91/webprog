@@ -1,4 +1,6 @@
 .classpath
 /.settings
 bin
+bin2
 rssresult.xml
+index.xsd

@@ -43,7 +43,7 @@ public class STAXConnector implements XMLReaderWrapper {
     private void call(int event, XMLStreamReader reader) {
         Consumer<XMLStreamReader> callback = this.eventMap.get(event);
         if(callback == null) {
-            System.out.println("Log unknown event: " + event);
+            //System.out.println("Log unknown event: " + event);
             return;
         }
         callback.accept(reader);

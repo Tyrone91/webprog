@@ -34,6 +34,9 @@ public class RssReader {
             activeFilter.addAll(DEFAULT_CONTENT_FILTER);
         }
         
+        
+        activeFilter = activeFilter.stream().map(String::toLowerCase).map(String::trim).collect(Collectors.toSet());
+        
         reader.onElementStart( str -> {
             if("item".equalsIgnoreCase(str)) {
                 items.push( new Item());
@@ -64,10 +67,10 @@ public class RssReader {
             if("item".equalsIgnoreCase(str)) {
                 final Item current = this.items.pop();
                 if(current.description != null) {
-                    if( activeFilter.stream().anyMatch(current.description::contains) ) {
+                    if( activeFilter.stream().anyMatch(current.description.toLowerCase()::contains) ) {
                         current.sourcename = this.rssSourcename;
                         current.sourcelink = this.rssSourcelink;
-                        activeFilter.stream().filter(current.description::contains).forEach(current.tags::add);
+                        activeFilter.stream().filter(current.description.toLowerCase()::contains).forEach(current.tags::add);
                         
                         this.foundItems.add(current);
                     }
@@ -90,6 +93,10 @@ public class RssReader {
                 this.items.peek().category = text;
             }
             
+            if( state.itemchild() && "pubDate".equalsIgnoreCase(str)) {
+                this.items.peek().pubdate = text;
+            }
+            
             if( state.channelchild() && "title".equalsIgnoreCase(str)) {
                 this.rssSourcename = text;
             }
@@ -106,18 +113,7 @@ public class RssReader {
     public List<Entry> start(InputStream inputstream) {
         this.reader.start(inputstream);
         
-        this.foundItems.forEach( item -> {
-            System.out.println("title: " + item.title);
-            System.out.println("dsc: " + item.description);
-            System.out.println("link: " + item.link);
-            System.out.println("srcname: " + item.sourcename);
-            System.out.println("srclink: " + item.sourcelink);
-            System.out.println("category: " + item.category);
-            System.out.println("tags: " + item.tags.stream().collect(Collectors.joining(",")));
-        });
-        
         final ObjectFactory fac = new ObjectFactory();
-        
         
         return this.foundItems
         .stream()
@@ -129,6 +125,7 @@ public class RssReader {
                 e.setLink(item.link);
                 e.setSourcelink(item.sourcelink);
                 e.setSourcename(item.sourcename);
+                e.setPubdate(item.pubdate);
                 
                 final Tags tags = fac.createTags();
                 tags.getTag().addAll(item.tags);
@@ -148,6 +145,7 @@ public class RssReader {
         public String sourcename = "";
         public String sourcelink = "";
         public String category = "";
+        public String pubdate = "";
         public List<String> tags = new ArrayList<>();
     }
     

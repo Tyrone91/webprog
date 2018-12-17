@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <!-- Selbstdefinierte Typen -->
+
     <xs:simpleType name="title">
         <xs:restriction base="xs:string" />
     </xs:simpleType>
@@ -28,6 +28,18 @@
     <xs:simpleType name="tag">
         <xs:restriction base="xs:string" />
     </xs:simpleType>
+	
+	<xs:simpleType name="pulldate">
+        <xs:restriction base="xs:date" />
+    </xs:simpleType>
+	
+	<xs:simpleType name="pulltime">
+        <xs:restriction base="xs:time" />
+    </xs:simpleType>
+	
+	<xs:simpleType name="pubdate">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
     
     <xs:complexType name="tags">
         <xs:sequence>
@@ -44,10 +56,12 @@
         <xs:element name="sourcelink" type="sourcelink"/>
         <xs:element name="category" type="category"/>
         <xs:element name="tags" type="tags"/>
+		<xs:element name="pulldate" type="pulldate"/>
+		<xs:element name="pulltime" type="pulltime"/>
+		<xs:element name="pubdate" type="pubdate"/>
         </xs:sequence>
     </xs:complexType>
     
-    <!-- Eigentliche Definition des XML Schemas -->
     <xs:element name="rss">
         <xs:complexType>
         <xs:sequence>
