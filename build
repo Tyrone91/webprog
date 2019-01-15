@@ -1,0 +1,2 @@
+mkdir -p bin;
+javac -sourcepath "./src" -classpath "./src/uebung" -d "bin" src/Main.java

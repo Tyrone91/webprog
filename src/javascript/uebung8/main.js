@@ -17,7 +17,9 @@ window.addEventListener("load", event => {
         const deleteBttn = document.createElement("button");
         deleteBttn.addEventListener("click", e => {
             [...document.getElementsByTagName(element)].forEach( el => el.remove());
-            document.querySelectorAll(`[data-owner=${element}]`).forEach( b => b.remove() );
+            cntBttn.remove();
+            deleteBttn.remove();
+            //document.querySelectorAll(`[data-owner=${element}]`).forEach( b => b.remove() );
             
         });
         deleteBttn.textContent = element;

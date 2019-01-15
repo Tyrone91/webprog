@@ -1,0 +1,27 @@
+.draggable-list {
+    border-left: 10px solid blue;
+    min-height: 20px;
+    min-width: 50px;
+}
+
+.draggable-list:hover {
+    box-shadow: 1px 1px 5px black;
+    cursor: pointer;
+}
+
+.dragged {
+    box-shadow: 1px 1px 5px blue;
+}
+
+.draggable-list.drag-entries > li {
+    padding: 0.5em;
+}
+
+.draggable-list.drag-entries > li:hover {
+    box-shadow: 1px 1px 5px black;
+    cursor: pointer;
+}
+
+.drop-target {
+    background-color: lightblue;
+}
