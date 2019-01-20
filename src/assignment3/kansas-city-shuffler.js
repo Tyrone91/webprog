@@ -40,20 +40,20 @@ class KansasCityShuffler {
 
     _indexOf(e1) {
         let i = 0;
-        let tmp = e1.parentNode.firstElementChild;
+        let tmp = e1.parentNode.firstChild;
         while(tmp && tmp != e1) {
-            tmp = tmp.nextElementSibling;
+            tmp = tmp.nextSibling;
             ++i;
         }
         return i;
     }
 
     _insertAt(target, element, index) {
-        let refNode = target.firstElementChild;
+        let refNode = target.firstChild;
         let i = 0;
         while(refNode && i !== index) {
-            ++index;
-            refNode = refNode.nextElementSibling;
+            ++i;
+            refNode = refNode.nextSibling;
         }
         target.insertBefore(element, refNode);
     }
@@ -65,6 +65,9 @@ class KansasCityShuffler {
         const index1 = this._indexOf(e1);
         const index2 = this._indexOf(e2);
 
+        e1.remove();
+        e2.remove();
+
         this._insertAt(parent1, e2, index1);
         this._insertAt(parent2, e1, index2);
 
@@ -74,13 +77,22 @@ class KansasCityShuffler {
 
     _swapElementsOfTag(tag) {
         const elements = [...this._root.getElementsByTagName(tag)]; //copy to array.
-        elements.forEach( e => {
+
+        let i = 0;
+        const next = () => {
+            const e = elements[i];
             const selection = this._collectPossibleSwapsFor(e);
             if(selection.length) {
                 const toSwapWith = this._pickRandomElementFrom(selection);
                 this._swap(e, toSwapWith);
             }
-        });
+            ++i;
+            if(i < elements.length) {
+                setTimeout( next, 500);
+            }
+        };
+
+        next();
     }
 
     shuffle(...tags) {
