@@ -1,0 +1,29 @@
+body {
+    color: #191919;
+    
+    margin: 5% 15% 10% 15%;
+}
+th {
+    background-color: #6e8b3d;
+}
+table,th,td {
+    border: 1px solid grey;
+    text-align:center;   
+    border-collapse: collapse;  
+}
+img{
+    float:right;
+}
+.overflow{
+    overflow:auto;
+}
+#controlDiv {
+   text-align:center;
+   margin:50px 100px 0px 100px;
+   padding: 5px;
+   border: 1px solid green;
+   border-radius: 5px;
+}
+.count{
+      margin: auto;
+}
