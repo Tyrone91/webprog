@@ -30,7 +30,9 @@ class KansasCityShuffler {
     _collectPossibleSwapsFor(element) {
         const tag = element.tagName;
         const elements = [...this._root.getElementsByTagName(tag)]; // get all elements and convert array-like object to real array.
-        return elements.filter( e => this._isShuffable(element,e));
+        return elements
+            .filter( e => this._isShuffable(element,e))
+            .filter( e => !this._isControl(e) );
     }
 
     _pickRandomElementFrom(elements) {
@@ -75,9 +77,24 @@ class KansasCityShuffler {
         this._swappedPairs.set(e2,e1);
     }
 
-    _swapElementsOfTag(tag) {
-        const elements = [...this._root.getElementsByTagName(tag)]; //copy to array.
+    _isControl(e) {
+        let tmp = e;
+        while(tmp) {
+            if(tmp.dataset && tmp.dataset.controlTable === "true") {
+                return true;
+            }
+            tmp = tmp.parentNode;
+        }
+        return false;
+    }
 
+    _swapElementsOfTag(tag) {
+        document.querySelectorAll(`button[data-button-for-element=${tag}]`)
+            .forEach(bttn => bttn.disabled = "true");
+
+        const elements = [...this._root.getElementsByTagName(tag)]
+            .filter(e => !this._isControl(e)); //copy to array.
+        
         let i = 0;
         const next = () => {
             const e = elements[i];
@@ -89,6 +106,9 @@ class KansasCityShuffler {
             ++i;
             if(i < elements.length) {
                 setTimeout( next, 500);
+            } else {
+                document.querySelectorAll(`button[data-button-for-element=${tag}]`)
+                    .forEach(bttn => bttn.disabled = "");
             }
         };
 
@@ -108,12 +128,35 @@ const ELEMENTS = ["li", "h1", "h2", "img", "p", "a", "tr"];
 window.addEventListener("load", e => {
     const shuffler = new KansasCityShuffler();
 
+    const controlContainer = document.createElement("div");
+    const controlTr = document.createElement("tr");
+    const countTr = document.createElement("tr");
+    const table = document.createElement("table");
+
+    table.appendChild(controlTr);
+    table.appendChild(countTr);
+
     ELEMENTS.forEach( e => {
         const go = document.createElement("button");
         go.addEventListener("click", evt => {
             shuffler.shuffle(e);
         });
         go.textContent = e;
-        document.body.insertBefore(go, document.body.firstChild);
+        go.dataset.buttonForElement = e;
+        //document.body.insertBefore(go, document.body.firstChild);
+        controlContainer.appendChild(go);
+
+        const cntTd = document.createElement("td");
+        const cntrlTd = document.createElement("td");
+
+        cntTd.textContent = document.getElementsByTagName(e).length;
+        cntrlTd.appendChild(go);
+
+        controlTr.appendChild(cntrlTd);
+        countTr.appendChild(cntTd);
     });
+
+    table.dataset.controlTable = "true";
+
+    document.body.insertBefore(table, document.body.firstChild);
 });
