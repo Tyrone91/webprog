@@ -131,10 +131,25 @@ window.addEventListener("load", e => {
     const controlContainer = document.createElement("div");
     const controlTr = document.createElement("tr");
     const countTr = document.createElement("tr");
+    const checkTr = document.createElement("tr");
+    const shuffleTr = document.createElement("tr");
     const table = document.createElement("table");
+    
+    const shuffleTd = document.createElement("td");
+    shuffleTd.colSpan = ELEMENTS.length;
+    const shuffleAllBttn = document.createElement("button");
+    shuffleAllBttn.textContent = "Shuffle!";
+    shuffleAllBttn.addEventListener("click", evt => {
+    	const selectedElements = [...document.querySelectorAll("input[type='checkbox']:checked")];
+    	shuffler.shuffle(...selectedElements.map(e => e.dataset.checkboxForElement));
+    });
+    shuffleTd.appendChild(shuffleAllBttn);
+    shuffleTr.appendChild(shuffleTd);
 
     table.appendChild(controlTr);
     table.appendChild(countTr);
+    table.appendChild(checkTr);
+    table.appendChild(shuffleTr);
 
     ELEMENTS.forEach( e => {
         const go = document.createElement("button");
@@ -148,14 +163,22 @@ window.addEventListener("load", e => {
 
         const cntTd = document.createElement("td");
         const cntrlTd = document.createElement("td");
+        const checkTd = document.createElement("td");
 
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.dataset.checkboxForElement = e;
+        
         cntTd.textContent = document.getElementsByTagName(e).length;
         cntrlTd.appendChild(go);
+        checkTd.appendChild(checkbox);
 
         controlTr.appendChild(cntrlTd);
         countTr.appendChild(cntTd);
+        checkTr.appendChild(checkTd);
     });
-
+    
+    
     table.dataset.controlTable = "true";
 
     document.body.insertBefore(table, document.body.firstChild);
