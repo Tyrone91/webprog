@@ -91,14 +91,17 @@ class KansasCityShuffler {
 
 }
 
+const ELEMENTS = ["li", "h1", "h2", "img", "p", "a", "tr"];
+
 window.addEventListener("load", e => {
     const shuffler = new KansasCityShuffler();
 
-    const go = document.createElement("button");
-    go.addEventListener("click", e => {
-        shuffler.shuffle("li");
+    ELEMENTS.forEach( e => {
+        const go = document.createElement("button");
+        go.addEventListener("click", evt => {
+            shuffler.shuffle(e);
+        });
+        go.textContent = e;
+        document.body.insertBefore(go, document.body.firstChild);
     });
-    go.textContent = "Shuffle";
-
-    document.body.insertBefore(go, document.body.firstChild);
-})
+});
