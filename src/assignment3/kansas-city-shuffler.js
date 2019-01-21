@@ -212,4 +212,26 @@ window.addEventListener("load", e => {
     table.dataset.controlTable = "true";
 
     document.body.insertBefore(table, document.body.firstChild);
+    
+    
+    
+    window.addEventListener("deviceorientation", eventData =>{
+    	const color1 = {red: 0, green: 0, blue: 0};
+    	const color2 = {red: 255, green: 255, blue: 255};
+    	let alpha = eventData.alpha;
+    	if(alpha > 180){
+    		const diff  = alpha-180;
+    		alpha = 180-diff;
+    	}
+    	const colorPart = (alpha/180)*100;
+    	
+    	function colorShuffle(c1,c2,percent){
+    		return c1 + (c2 - c1)*percent/100;
+    	}
+    	const newColor = `rgb(${colorShuffle(color1.red,color2.red,colorPart)},${color1.green, color2.green,colorPart},${color1.blue, color2.blue, colorPart})`;
+    	document.body.style="background-color: " + newColor;
+    });
+    
+    
+    
 });
