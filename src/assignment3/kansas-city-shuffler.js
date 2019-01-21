@@ -216,19 +216,25 @@ window.addEventListener("load", e => {
     
     
     window.addEventListener("deviceorientation", eventData =>{
-    	const color1 = {red: 0, green: 0, blue: 0};
-    	const color2 = {red: 255, green: 255, blue: 255};
-    	let alpha = eventData.alpha;
-    	if(alpha > 180){
-    		const diff  = alpha-180;
-    		alpha = 180-diff;
-    	}
-    	const colorPart = (alpha/180)*100;
+        const MAX_VALUE = 180;
+    	const color1 = {red: 42, green: 140, blue: 252};
+    	const color2 = {red: 252, green: 42, blue: 42};
+        let alpha = Math.abs(eventData.alpha % 360);
+        //let alpha = Math.abs(eventData.gamma);
+        console.log(alpha);
+    	if(alpha > MAX_VALUE){
+    		const diff  = alpha - MAX_VALUE;
+    		alpha = MAX_VALUE - diff;
+        }
+    	const colorPart = (alpha/MAX_VALUE)*100;
     	
     	function colorShuffle(c1,c2,percent){
-    		return c1 + (c2 - c1)*percent/100;
-    	}
-    	const newColor = `rgb(${colorShuffle(color1.red,color2.red,colorPart)},${color1.green, color2.green,colorPart},${color1.blue, color2.blue, colorPart})`;
+    		return Math.floor( c1 + (c2 - c1) * (percent / 100) );
+        }
+        const red = colorShuffle(color1.red,color2.red,colorPart);
+        const green = colorShuffle(color1.green, color2.green,colorPart);
+        const blue = colorShuffle(color1.blue, color2.blue, colorPart);
+        const newColor = `rgb(${red},${green},${blue})`;
     	document.body.style="background-color: " + newColor;
     });
     
