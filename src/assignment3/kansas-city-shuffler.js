@@ -237,7 +237,13 @@ window.addEventListener("load", e => {
         const newColor = `rgb(${red},${green},${blue})`;
     	document.body.style.backgroundColor = newColor;
     });
+
     
+    window.addEventListener("devicemotion", eventData =>{
+    	if(eventData.acceleration.x > 5|| eventData.acceleration.y > 5|| eventData.acceleration.z > 5){
+    		shuffler.shuffle(...ELEMENTS);
+    	}
+    });
     
     
 });
