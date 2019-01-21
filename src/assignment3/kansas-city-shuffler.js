@@ -235,7 +235,7 @@ window.addEventListener("load", e => {
         const green = colorShuffle(color1.green, color2.green,colorPart);
         const blue = colorShuffle(color1.blue, color2.blue, colorPart);
         const newColor = `rgb(${red},${green},${blue})`;
-    	document.body.style="background-color: " + newColor;
+    	document.body.style.backgroundColor = newColor;
     });
     
     
