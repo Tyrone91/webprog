@@ -136,14 +136,17 @@ class KansasCityShuffler {
 
 const ELEMENTS = ["li", "h1", "h2", "img", "p", "a", "tr"];
 
-function toggleInput(table, enable) {
-    table.querySelectorAll("button").forEach( bttn => {
-        bttn.disabled = enable;
-    });
-}
+
 
 window.addEventListener("load", e => {
     const shuffler = new KansasCityShuffler();
+    let isShuffling = false;
+    function toggleInput(table, enable) {
+    	isShuffling = !enable;
+        table.querySelectorAll("button").forEach( bttn => {
+            bttn.disabled = enable;
+        });
+    }
 
     const controlContainer = document.createElement("div");
     const controlTr = document.createElement("tr");
@@ -238,15 +241,15 @@ window.addEventListener("load", e => {
     	document.body.style.backgroundColor = newColor;
     });
 
-    let isShuffling = false;
+    
     window.addEventListener("devicemotion", eventData =>{
     	if(isShuffling){
     		return;	
     	}
     	if(eventData.acceleration.x > 5|| eventData.acceleration.y > 5|| eventData.acceleration.z > 5){
-    		isShuffling = true;
+    		toggleInput(table, false);
     		shuffler.shuffle(() =>{
-    			isShuffling = false;
+    			toggleInput(table, true);
     		},...ELEMENTS);
     	}
     });
