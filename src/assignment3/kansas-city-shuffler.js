@@ -238,10 +238,16 @@ window.addEventListener("load", e => {
     	document.body.style.backgroundColor = newColor;
     });
 
-    
+    let isShuffling = false;
     window.addEventListener("devicemotion", eventData =>{
+    	if(isShuffling){
+    		return;	
+    	}
     	if(eventData.acceleration.x > 5|| eventData.acceleration.y > 5|| eventData.acceleration.z > 5){
-    		shuffler.shuffle(...ELEMENTS);
+    		isShuffling = true;
+    		shuffler.shuffle(() =>{
+    			isShuffling = false;
+    		},...ELEMENTS);
     	}
     });
     
