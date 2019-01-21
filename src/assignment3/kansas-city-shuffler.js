@@ -34,12 +34,14 @@ class KansasCityShuffler {
             .filter( e => this._isShuffable(element,e))
             .filter( e => !this._isControl(e) );
     }
-
+    
+    // pick random swappartner
     _pickRandomElementFrom(elements) {
         const index = Math.random() * elements.length;
         return elements[Math.floor(index)];
     }
 
+    // get position of the element
     _indexOf(e1) {
         let i = 0;
         let tmp = e1.parentNode.firstChild;
@@ -50,6 +52,7 @@ class KansasCityShuffler {
         return i;
     }
 
+    // insert element at given position under the target
     _insertAt(target, element, index) {
         let refNode = target.firstChild;
         let i = 0;
@@ -60,6 +63,7 @@ class KansasCityShuffler {
         target.insertBefore(element, refNode);
     }
 
+    // swap two elements
     _swap(e1, e2) {
         const parent1 = e1.parentNode;
         const parent2 = e2.parentNode;
@@ -73,6 +77,7 @@ class KansasCityShuffler {
         this._insertAt(parent1, e2, index1);
         this._insertAt(parent2, e1, index2);
 
+        // set pair to map to prevent double swapping
         this._swappedPairs.set(e1,e2);
         this._swappedPairs.set(e2,e1);
     }
@@ -88,9 +93,10 @@ class KansasCityShuffler {
         return false;
     }
 
+    // pick two swappartners from tag
     _swapElementsOfTag(tag, onFinished = () => {}) {
         const elements = [...this._root.getElementsByTagName(tag)]
-            .filter(e => !this._isControl(e)); //copy to array.
+            .filter(e => !this._isControl(e)); //copy to array and filter 
         
         let i = 0;
         const next = () => {
@@ -111,6 +117,7 @@ class KansasCityShuffler {
         next();
     }
 
+    // shuffle multiple tags
     shuffle(onFinished = () => {}, ...tags) {
         this._swappedPairs.clear();
         if(!tags.length) {
@@ -141,6 +148,8 @@ const ELEMENTS = ["li", "h1", "h2", "img", "p", "a", "tr"];
 window.addEventListener("load", e => {
     const shuffler = new KansasCityShuffler();
     let isShuffling = false;
+    
+    // disable and enable buttons and shuffling
     function toggleInput(table, enable) {
     	isShuffling = !enable;
         table.querySelectorAll("button").forEach( bttn => {
@@ -223,8 +232,6 @@ window.addEventListener("load", e => {
     	const color1 = {red: 42, green: 140, blue: 252};
     	const color2 = {red: 252, green: 42, blue: 42};
         let alpha = Math.abs(eventData.alpha % 360);
-        //let alpha = Math.abs(eventData.gamma);
-        console.log(alpha);
     	if(alpha > MAX_VALUE){
     		const diff  = alpha - MAX_VALUE;
     		alpha = MAX_VALUE - diff;
