@@ -144,7 +144,7 @@ window.addEventListener("load", e => {
     function toggleInput(table, enable) {
     	isShuffling = !enable;
         table.querySelectorAll("button").forEach( bttn => {
-            bttn.disabled = enable ? "true" : "";
+            bttn.disabled = enable ? "" : "true";
         });
     }
 
@@ -166,11 +166,11 @@ window.addEventListener("load", e => {
         if(!tags.length) {
             return;
         }
-        toggleInput(table, true);
+        toggleInput(table, false);
         shuffleAllBttn.disabled = "true";
     	shuffler.shuffle( () => {
             shuffleAllBttn.disabled = "";
-            toggleInput(table, false);
+            toggleInput(table, true);
         }, ...tags);
     });
     shuffleTd.appendChild(shuffleAllBttn);
@@ -184,9 +184,9 @@ window.addEventListener("load", e => {
     ELEMENTS.forEach( e => {
         const go = document.createElement("button");
         go.addEventListener("click", evt => {
-            toggleInput(table, true);
+            toggleInput(table, false);
             shuffler.shuffle(() => {
-                toggleInput(table, false);
+                toggleInput(table, true);
             },e);
         });
         go.textContent = e;
