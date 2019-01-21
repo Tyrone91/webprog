@@ -88,10 +88,7 @@ class KansasCityShuffler {
         return false;
     }
 
-    _swapElementsOfTag(tag) {
-        document.querySelectorAll(`button[data-button-for-element=${tag}]`)
-            .forEach(bttn => bttn.disabled = "true");
-
+    _swapElementsOfTag(tag, onFinished = () => {}) {
         const elements = [...this._root.getElementsByTagName(tag)]
             .filter(e => !this._isControl(e)); //copy to array.
         
@@ -107,23 +104,43 @@ class KansasCityShuffler {
             if(i < elements.length) {
                 setTimeout( next, 500);
             } else {
-                document.querySelectorAll(`button[data-button-for-element=${tag}]`)
-                    .forEach(bttn => bttn.disabled = "");
+                onFinished();
             }
         };
 
         next();
     }
 
-    shuffle(...tags) {
+    shuffle(onFinished = () => {}, ...tags) {
         this._swappedPairs.clear();
-        tags.forEach( tag => this._swapElementsOfTag(tag));
+        if(!tags.length) {
+            onFinished();
+        }
+
+        let i = 0;
+        const next = () => {
+            if(i >= tags.length) {
+                onFinished();
+                return;
+            }
+            const tag = tags[i];
+            ++i;
+            this._swapElementsOfTag(tag, next);
+        };
+
+        next();
     }
 
 
 }
 
 const ELEMENTS = ["li", "h1", "h2", "img", "p", "a", "tr"];
+
+function toggleInput(table, enable) {
+    table.querySelectorAll("button").forEach( bttn => {
+        bttn.disabled = enable;
+    });
+}
 
 window.addEventListener("load", e => {
     const shuffler = new KansasCityShuffler();
@@ -140,8 +157,18 @@ window.addEventListener("load", e => {
     const shuffleAllBttn = document.createElement("button");
     shuffleAllBttn.textContent = "Shuffle!";
     shuffleAllBttn.addEventListener("click", evt => {
-    	const selectedElements = [...document.querySelectorAll("input[type='checkbox']:checked")];
-    	shuffler.shuffle(...selectedElements.map(e => e.dataset.checkboxForElement));
+        
+        const selectedElements = [...document.querySelectorAll("input[type='checkbox']:checked")];
+        const tags = selectedElements.map(e => e.dataset.checkboxForElement);
+        if(!tags.length) {
+            return;
+        }
+        toggleInput(table, "true");
+        shuffleAllBttn.disabled = "true";
+    	shuffler.shuffle( () => {
+            shuffleAllBttn.disabled = "";
+            toggleInput(table, "");
+        }, ...tags);
     });
     shuffleTd.appendChild(shuffleAllBttn);
     shuffleTr.appendChild(shuffleTd);
@@ -154,7 +181,10 @@ window.addEventListener("load", e => {
     ELEMENTS.forEach( e => {
         const go = document.createElement("button");
         go.addEventListener("click", evt => {
-            shuffler.shuffle(e);
+            toggleInput(table, "true");
+            shuffler.shuffle(() => {
+                toggleInput(table, "");
+            },e);
         });
         go.textContent = e;
         go.dataset.buttonForElement = e;
